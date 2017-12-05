@@ -1,0 +1,17 @@
+#!/bin/sh
+
+set -e
+
+IMAGE_INSTALL_LCK=/opt/tiki/.image-installed
+
+if [ ! -f "${IMAGE_INSTALL_LCK}" ]; then
+  echo "New install detected, initializing /opt/tiki install directory..."
+  cp -aT /opt/tiki-distribution /opt/tiki \
+    && chown -R www-data:www-data /opt/tiki \
+    && touch $IMAGE_INSTALL_LCK
+
+  echo "done."
+fi
+
+# Resume normal operation from parent image entrypoint
+exec docker-php-entrypoint "$@"

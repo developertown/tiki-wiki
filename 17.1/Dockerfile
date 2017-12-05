@@ -21,15 +21,12 @@ RUN docker-php-ext-install -j$(nproc) gd
 
 RUN a2enmod rewrite
 
-RUN chown www-data:www-data /opt
-USER www-data
 WORKDIR /opt
 RUN curl -L \
     https://downloads.sourceforge.net/project/tikiwiki/${TIKI_RELEASE}/${TIKI_VERSION}/tiki-${TIKI_VERSION}.tar.gz \
   | tar -xzf -
-RUN mv "/opt/tiki-${TIKI_VERSION}" /opt/tiki
-
-USER root
+RUN mv "/opt/tiki-${TIKI_VERSION}" /opt/tiki-distribution
+RUN mkdir /opt/tiki
 
 # Setup crontab (only used with the CMD is `cron -f`)
 RUN \
